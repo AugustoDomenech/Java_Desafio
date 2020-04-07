@@ -1,2 +1,15 @@
 # Java_Desafio
-Api_Java 
+Desafio Java - Backend REST 
+
+Api esta respondendo aos metados REST
+
+Implementados :)
+ 
+- Repository
+ - Controler
+ - JPA
+ - Hibernate 
+ - SpringBoot - REST
+ 
+ 
+ - Beans Validation - 60%
