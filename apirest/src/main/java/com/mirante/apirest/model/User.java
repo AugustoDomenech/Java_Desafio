@@ -2,18 +2,15 @@ package com.mirante.apirest.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
 
 @Entity
 public class User implements Serializable {
@@ -23,8 +20,9 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @NotNull(message = "Campo 'Nome' é obrigatório.")
+    
     @Max(value = 100, message  = "O campo 'Nome' deve conter no maximo 100 characters")
+    @NotNull(message = "Campo 'Nome' é obrigatório.")
     private String name;    
     
     @NotNull(message = "Campo 'Login' é obrigatório.")

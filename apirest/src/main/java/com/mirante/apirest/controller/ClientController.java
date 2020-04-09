@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,37 +23,37 @@ public class ClientController {
 	@Autowired
 	ClientRepository clientRepository;
 	
+	//Salva o clientes
+	@CrossOrigin(origins = "http://localhost:3000")	
 	@RequestMapping( value = "/save" , method = RequestMethod.POST)
 	@ResponseBody
 	public Client save( @RequestBody Client client  ) {				
-		client.setRegisterDate(LocalDate.now());
-		
-		for( Fone fone : client.getFones() ) {
-			fone.setClient(client);
-		}
-		
+		client.setRegisterDate(LocalDate.now());				
 		return clientRepository.save(client);
 	}
 	
+	// busca todos os clientes
+	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping( value = "/clients" , method = RequestMethod.GET)
 	@ResponseBody
 	public List<Client> getClientAll() {									
 		return clientRepository.findAll();
 	}
 	
+	//Busca um cliente por ID
+	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping( value = "/{id}" , method = RequestMethod.GET)
 	@ResponseBody
 	public Client getClientbyId( @PathVariable("id") Long id ) {									
 		return clientRepository.findById(id).get();
 	}
-		
 	
-	@RequestMapping( value = "/save" , method = RequestMethod.PUT)
+	//Remove um cliente por ID
+	@CrossOrigin(origins = "http://localhost:3000")
+	@RequestMapping( value = "/{id}" , method = RequestMethod.DELETE)
 	@ResponseBody
-	public Client editClient( @RequestBody Client client  ) {				
-		client.setRegisterDate(LocalDate.now());
+	public void deleteClient( @PathVariable("id") Long id ) {									
+		clientRepository.deleteById(id);
+	}	
 		
-		return clientRepository.save(client);
-	}
-	
 }
