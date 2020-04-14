@@ -16,6 +16,7 @@ Implementados :)
  - JPA
  - Hibernate 
  - SpringBoot - REST
+ - JWT
  
  
  - Beans Validation - 60%
