@@ -123,7 +123,7 @@ public class ClientController {
 		return null;
 	}
 	
-	// busca todos os clientes exeto o nome dos pais e telefone
+	// busca todos os clientes
 	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping( value = "/clients" , method = RequestMethod.GET)
 	@ResponseBody
@@ -153,8 +153,14 @@ public class ClientController {
 	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping( value = "/{id}" , method = RequestMethod.DELETE)
 	@ResponseBody
-	public void deleteClient( @PathVariable("id") Long id ) {									
-		clientRepository.deleteById(id);
+	public void deleteClient(@RequestHeader("Bearer") String token,  @PathVariable("id") Long id ) {									
+		if (UserAuthenticationService.validateToken(token) && isManager(UserAuthenticationService.getIdBodyToken(token))) {
+			clientRepository.deleteById(id);	
+		} else {
+			System.out.println("Somente usuários com permissão de gerente pode excluir pessoas.");
+		}
+		
+		
 	}	
 		
 }
