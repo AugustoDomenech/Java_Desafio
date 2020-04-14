@@ -42,12 +42,14 @@ public class DummyDate {
 		//Insere os tipos de Cliente Default
 		
 		ClientType clientType = new ClientType();
+		clientType.setId(1L);
 		clientType.setName("Física");
 		clientTypeRepository.save(clientType); 
 		
 		System.out.println(clientType.toString() );
 		
 		clientType = new ClientType();
+		clientType.setId(1L);
 		clientType.setName("Jurídica");
 		clientTypeRepository.save(clientType);
 		
@@ -62,12 +64,14 @@ public class DummyDate {
 		System.out.println(userType.toString() );
 		
 		userType = new UserType();
+		userType.setId(2L);
 		userType.setName("Gerente");
 		userTypeRepository.save(userType);		
 		
 		System.out.println(userType.toString() );
 		
 		userType = new UserType();
+		userType.setId(3L);
 		userType.setName("Analista");
 		userTypeRepository.save(userType);		
 				
@@ -75,18 +79,21 @@ public class DummyDate {
 				
 		// Insere os tipos de contato default
 		FoneType foneType = new FoneType();
+		foneType.setId(1L);
 		foneType.setName("Residencial");
 		foneTypeRepository.save(foneType);				
 		
 		System.out.println(foneType.toString() );
 		
 		foneType = new FoneType();
+		foneType.setId(2L);
 		foneType.setName("Celular");
 		foneTypeRepository.save(foneType);
 		
 		System.out.println(foneType.toString() );
 		
 		foneType = new FoneType();
+		foneType.setId(3L);
 		foneType.setName("Trabalho");
 		foneTypeRepository.save(foneType);
 		

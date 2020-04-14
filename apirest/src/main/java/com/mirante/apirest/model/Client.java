@@ -24,27 +24,27 @@ public class Client implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
    
-    @NotNull(message = "Campo 'Nome' é obrigatório.")
+//    @NotNull(message = "Campo 'Nome' é obrigatório.")
     private String name;
     
-    @NotNull(message = "Campo 'Documento' é obrigatório.")    
+//    @NotNull(message = "Campo 'Documento' é obrigatório.")    
     private String document;
 
-    @OneToMany( cascade = CascadeType.ALL ,mappedBy = "client")
+    @OneToMany( cascade = CascadeType.ALL ,mappedBy = "client_id")
     private List<Fone> fones;
 
-    @NotNull(message = "Campo 'Data de nascimento' é obrigatório.")    
-    @PastOrPresent(message = "A data de aniversario não pode ser uma data futura.")
+//    @NotNull(message = "Campo 'Data de nascimento' é obrigatório.")    
+//    @PastOrPresent(message = "A data de aniversario não pode ser uma data futura.")
     private LocalDate birthDate;
 
     @Column(name = "name_mother")
-    @Max(value = 100, message  = "O campo 'Nome da mãe' deve conter no maximo 100 characters")
-    @Pattern(regexp="[a-z]")
+//    @Max(value = 100, message  = "O campo 'Nome da mãe' deve conter no maximo 100 characters")
+//    @Pattern(regexp="[a-z]")
     private String nameMother;
 
     @Column(name = "name_father")
-    @Max(value = 100, message  = "O campo 'Nome do pai' deve conter no maximo 100 characters")
-    @Pattern(regexp="[a-z]")
+//    @Max(value = 100, message  = "O campo 'Nome do pai' deve conter no maximo 100 characters")
+//    @Pattern(regexp="[a-z]")
     private String nameFather;
 
     @Column(name = "register_date")
@@ -54,7 +54,7 @@ public class Client implements Serializable {
     private int userRegister;
 
     @Column(name = "client_type")
-    @NotNull(message = "Campo 'Tipo de cliente' é obrigatório.")
+//    @NotNull(message = "Campo 'Tipo de cliente' é obrigatório.")
     private ClientType clientType;
 
     public List<Fone> getFones() {

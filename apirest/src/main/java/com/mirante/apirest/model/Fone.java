@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 import org.hibernate.annotations.ForeignKey;
@@ -26,7 +27,9 @@ public class Fone implements Serializable {
     
     private String DDD;
     private String number;
-    private Long id_client;
+    
+    @ManyToOne
+    private Client client_id;
     
     @ManyToOne
     @JoinColumn(name = "typeFone")

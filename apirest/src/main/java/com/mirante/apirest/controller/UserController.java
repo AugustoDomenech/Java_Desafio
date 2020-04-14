@@ -102,16 +102,16 @@ public class UserController {
 	@ResponseBody
 	public User saveUser( @RequestHeader("Bearer") String token , @RequestBody User user ) {		
 		if (UserAuthenticationService.validateToken(token)) {
+			
 			// Verica se o usuário é administrador
 			if( isAdmin(UserAuthenticationService.getIdBodyToken(token)) ) {
-				user.setRegister_date(LocalDate.now());	
-				
 				if (user.getId() > 0) {
 					user.setLogin( userRepository.findById(user.getId()).get().getLogin() );
 				}
-				
-				return userRepository.save(user);							
 			}
+			
+			user.setRegister_date(LocalDate.now());	
+			return userRepository.save(user);							
 		}
 		return null;
 	};
