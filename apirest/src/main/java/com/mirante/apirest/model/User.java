@@ -20,13 +20,14 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    private String token;
     
-    @Max(value = 100, message  = "O campo 'Nome' deve conter no maximo 100 characters")
+//    @Max(value = 100, message  = "O campo 'Nome' deve conter no maximo 100 characters")
     @NotNull(message = "Campo 'Nome' é obrigatório.")
     private String name;    
     
     @NotNull(message = "Campo 'Login' é obrigatório.")
-    @Max(value = 15, message  = "O campo 'Nome' deve conter no maximo 100 characters")
+//    @Max(value = 15, message  = "O campo 'Nome' deve conter no maximo 100 characters")
     private String login;
     
     @NotNull(message = "Campo 'Password' é obrigatório.")
@@ -93,6 +94,14 @@ public class User implements Serializable {
         this.register_date = register_date;
     }
     
-    private LocalDate register_date;
+    public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	private LocalDate register_date;
 
 }

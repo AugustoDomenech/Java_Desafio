@@ -52,7 +52,13 @@ public class UserController {
 	@RequestMapping( value = "/authLogin/{email}/{password}", method = RequestMethod.GET)
 	@ResponseBody
 	public User userByLogin( @PathVariable("email") String email, @PathVariable("password") String password  ) {		
-		return userRepository.findByLogin(email, password);
+		
+		User user = userRepository.findByLogin(email, password);
+		if (user.getId() > -1L)  {
+		  UserAuthenticationService.authenticate(user);
+		  user = userRepository.save(user);
+		}
+		return user;
 	}	
 	
 	// Remove o usuario pelo ID

@@ -23,7 +23,7 @@ public class Client implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+   
     @NotNull(message = "Campo 'Nome' é obrigatório.")
     private String name;
     

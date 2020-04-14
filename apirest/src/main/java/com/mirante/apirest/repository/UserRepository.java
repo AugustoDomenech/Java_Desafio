@@ -16,5 +16,7 @@ public interface UserRepository  extends JpaRepository<User, Long> {
 	@Query("SELECT user from User as user where user.login = ?1 and user.password = ?2")
 	User findByLogin(String login, String password);
 
-
+	//alteramos apenas o token no banco de dados
+	@Query("UPDATE User as user SET user.token = ?1  where user.id = ?2")
+	User setToken(String token, Long id);
 }
