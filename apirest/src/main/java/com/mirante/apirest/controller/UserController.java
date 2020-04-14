@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mirante.apirest.model.User;
 import com.mirante.apirest.repository.UserRepository;
+import com.mirante.service.serviceImpl.UserServiceImpl;
 
 @Controller
 @RequestMapping("/user")
@@ -30,10 +31,15 @@ public class UserController {
 	@ResponseBody
 	public List<User> getUserAll( @RequestHeader("Bearer") String token ) {
 		if (UserAuthenticationService.validateToken(token)) {
-			return userRepository.findAll();	
+			UserServiceImpl usip = new UserServiceImpl();
+									
+			// Verica se o usuário é administrador
+			if( usip.isAdmin(UserAuthenticationService.getIdBodyToken(token)) ) {
+				return userRepository.findAll();						
+			}
 		}
 		return null;
-	}			
+	};			
 	
 	//Busca um usuário por um ID especifico
 	@CrossOrigin(origins = "http://localhost:3000")
@@ -41,36 +47,38 @@ public class UserController {
 	@ResponseBody
 	public User getUserId( @RequestHeader("Bearer") String token , @PathVariable("id") Long id ) {
 		if (UserAuthenticationService.validateToken(token)) {
-			return userRepository.findById(id).get();	
+			UserServiceImpl usip = new UserServiceImpl();
+									
+			// Verica se o usuário é administrador
+			if( usip.isAdmin(UserAuthenticationService.getIdBodyToken(token)) ) {
+				Optional<User> user = userRepository.findById(id);
+				
+				if (user.isPresent()) {
+					return user.get();
+				}
+			}
 		}
 		return null;
-	}				
+	};			
 	
-	//Salva um novo usuário ou edita o atual
+	//Salva ou edita um novo usuário
 	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping( value = "/save", method = RequestMethod.POST)
 	@ResponseBody
 	public User saveUser( @RequestHeader("Bearer") String token , @RequestBody User user ) {		
 		if (UserAuthenticationService.validateToken(token)) {
-			Optional<User> userLogin = userRepository.findById( UserAuthenticationService.getIdBodyToken(token));
-			
-			User userLogged = null;
-			if (userLogin.isPresent()) {
-				userLogged = userLogin.get();
-			} else {
-				return null;				
-			}
-							
-			if((userLogin != null) && userLogged.getType().getId() == 3 ) {
+			UserServiceImpl usip = new UserServiceImpl();
+									
+			// Verica se o usuário é administrador
+			if( usip.isAdmin(UserAuthenticationService.getIdBodyToken(token)) ) {
 				user.setRegister_date(LocalDate.now());	
 				return userRepository.save(user);							
 			}
 		}
 		return null;
 	};
-	
-		
-	// Verifica se o usuário existe pelo seu login e senha
+			
+	// Autentica o usuário pelo login e senha
 	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping( value = "/authLogin/{email}/{password}", method = RequestMethod.GET)
 	@ResponseBody

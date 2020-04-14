@@ -15,6 +15,7 @@ import com.mirante.apirest.repository.ClientTypeRepository;
 import com.mirante.apirest.repository.FoneTypeRepository;
 import com.mirante.apirest.repository.UserRepository;
 import com.mirante.apirest.repository.UserTypeRepository;
+import com.mirante.service.TokenService;
 
 @Component
 public class DummyDate {
@@ -101,6 +102,8 @@ public class DummyDate {
 		user.setPassword("admin");
 		user.setRegister_date(LocalDate.now());
 		user.setType(usertype);
+		TokenService.generatetoken(user);
+		userRepository.save(user);
 		
 	
 }
