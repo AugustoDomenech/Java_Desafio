@@ -46,7 +46,7 @@ public class UserController {
 				
 			System.out.println(userLogged.getLogin());
 			
-			if((userLogin != null) && userLogged.getType().getId() == 3 ) {	
+			if((userLogin != null) && userLogged.getType().getId() == 1 ) {	
 				return true;							
 			} else {
 				return false;
@@ -101,6 +101,8 @@ public class UserController {
 	@RequestMapping( value = "/save", method = RequestMethod.POST)
 	@ResponseBody
 	public User saveUser( @RequestHeader("Bearer") String token , @RequestBody User user ) {		
+		System.out.println(token);
+		
 		if (UserAuthenticationService.validateToken(token)) {
 			
 			// Verica se o usuário é administrador
@@ -113,6 +115,7 @@ public class UserController {
 			user.setRegister_date(LocalDate.now());	
 			return userRepository.save(user);							
 		}
+		System.out.println("Erro ao registrar usuário.");
 		return null;
 	};
 			

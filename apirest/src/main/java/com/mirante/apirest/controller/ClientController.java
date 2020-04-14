@@ -48,7 +48,7 @@ public class ClientController {
 				
 			System.out.println(userLogged.getLogin());
 			
-			if((userLogin != null) && userLogged.getType().getId() == 4 ) {	
+			if((userLogin != null) && userLogged.getType().getId() == 2 ) {	
 				return true;							
 			} else {
 				return false;
@@ -77,7 +77,7 @@ public class ClientController {
 				
 			System.out.println(userLogged.getLogin());
 			
-			if((userLogin != null) && userLogged.getType().getId() == 5 ) {	
+			if((userLogin != null) && userLogged.getType().getId() == 3 ) {	
 				return true;							
 			} else {
 				return false;
