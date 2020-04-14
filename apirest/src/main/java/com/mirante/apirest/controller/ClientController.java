@@ -145,8 +145,12 @@ public class ClientController {
 	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping( value = "/{id}" , method = RequestMethod.GET)
 	@ResponseBody
-	public Client getClientbyId( @PathVariable("id") Long id ) {									
-		return clientRepository.findById(id).get();
+	public Client getClientbyId(@RequestHeader("Bearer") String token, @PathVariable("id") Long id ) {									
+		if (UserAuthenticationService.validateToken(token) && (isManager(UserAuthenticationService.getIdBodyToken(token)) || isAnalyst(UserAuthenticationService.getIdBodyToken(token)))) {
+			return clientRepository.findById(id).get();
+		}
+		System.out.println("Token invalido ou usuário sem permissão");
+		return null;
 	}
 	
 	//Remove um cliente por ID
