@@ -25,7 +25,6 @@ public class UserAuthenticationService {
 	public static boolean validateToken(String token) {
 		try {
 			String tokenTratado = token.replace("Bearer ", "");
-			System.out.println(tokenTratado);
 			
 			Claims clamis = TokenService.decodeToken(tokenTratado);
 			System.out.println("2");
@@ -35,7 +34,7 @@ public class UserAuthenticationService {
 			
 			//Verifica se o token já está expirado
 			if ( clamis.getExpiration().before( new Date(System.currentTimeMillis()))) {
-				System.out.println("Venvido");
+				System.out.println("Vencido");
 			}	
 			return true;
 		} catch (Exception e) {

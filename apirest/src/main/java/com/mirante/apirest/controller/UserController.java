@@ -25,6 +25,43 @@ public class UserController {
 	@Autowired
 	UserRepository userRepository;
 	
+	
+	public Boolean isAdmin(Long id) {
+		try {
+			System.out.println("-----");
+			// Buscamos o usuário no banco de dados
+			Optional<User> userLogin = userRepository.findById(id);
+			
+			System.out.println("-----");
+			
+			// Fazemos uma declaração do usuário logado
+			User userLogged = null;
+			
+			//Verificamos se foi achado algum usuário no banco de dados
+			if (userLogin.isPresent()) {
+				userLogged = userLogin.get();
+			} else {
+				return null;				
+			}
+				
+			System.out.println(userLogged.getLogin());
+			
+			if((userLogin != null) && userLogged.getType().getId() == 3 ) {	
+				return true;							
+			} else {
+				return false;
+			}
+	
+		}catch ( Exception e ) {
+			System.out.println("Erro ao validar administrador Error :" + e);
+			return false;	
+		}		
+	}
+	
+	
+	
+	
+	
 	//Busca todos os usuários
 	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping( value = "/users", method = RequestMethod.GET  )
@@ -34,7 +71,7 @@ public class UserController {
 			UserServiceImpl usip = new UserServiceImpl();
 									
 			// Verica se o usuário é administrador
-			if( usip.isAdmin(UserAuthenticationService.getIdBodyToken(token)) ) {
+			if(isAdmin(UserAuthenticationService.getIdBodyToken(token)) ) {
 				return userRepository.findAll();						
 			}
 		}
@@ -46,11 +83,9 @@ public class UserController {
 	@RequestMapping( value = "/{id}", method = RequestMethod.GET  )
 	@ResponseBody
 	public User getUserId( @RequestHeader("Bearer") String token , @PathVariable("id") Long id ) {
-		if (UserAuthenticationService.validateToken(token)) {
-			UserServiceImpl usip = new UserServiceImpl();
-									
+		if (UserAuthenticationService.validateToken(token)) {									
 			// Verica se o usuário é administrador
-			if( usip.isAdmin(UserAuthenticationService.getIdBodyToken(token)) ) {
+			if( isAdmin(UserAuthenticationService.getIdBodyToken(token)) ) {
 				Optional<User> user = userRepository.findById(id);
 				
 				if (user.isPresent()) {
@@ -67,11 +102,14 @@ public class UserController {
 	@ResponseBody
 	public User saveUser( @RequestHeader("Bearer") String token , @RequestBody User user ) {		
 		if (UserAuthenticationService.validateToken(token)) {
-			UserServiceImpl usip = new UserServiceImpl();
-									
 			// Verica se o usuário é administrador
-			if( usip.isAdmin(UserAuthenticationService.getIdBodyToken(token)) ) {
+			if( isAdmin(UserAuthenticationService.getIdBodyToken(token)) ) {
 				user.setRegister_date(LocalDate.now());	
+				
+				if (user.getId() > 0) {
+					user.setLogin( userRepository.findById(user.getId()).get().getLogin() );
+				}
+				
 				return userRepository.save(user);							
 			}
 		}
@@ -92,7 +130,12 @@ public class UserController {
 	// Remove o usuario pelo ID
 	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping( value = "/removeUser/{id}", method = RequestMethod.DELETE)
-	public void userByLogin( @PathVariable("id") Long id  ) {				
-		userRepository.deleteById(id);
-	}		
+	public void userByLogin( @RequestHeader("Bearer") String token, @PathVariable("id") Long id  ) {				
+		if (UserAuthenticationService.validateToken(token)) {
+			// Verica se o usuário é administrador
+			if( isAdmin(UserAuthenticationService.getIdBodyToken(token)) ) {
+				userRepository.deleteById(id);
+			}		
+		}		
+	};
 }

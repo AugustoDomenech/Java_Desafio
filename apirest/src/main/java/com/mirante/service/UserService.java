@@ -11,6 +11,6 @@ public interface UserService {
 	User findByLogin(String name, String password);
 	User findId(String name);
 	
-	Boolean isAdmin(Long id);
+	
 	
 }
