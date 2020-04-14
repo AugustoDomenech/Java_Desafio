@@ -35,7 +35,7 @@ public class User implements Serializable {
    
     @ManyToOne
     @JoinColumn(name = "type_id")
-    @NotNull(message = "O tipo de usuário deve ser informado.")
+    //@NotNull(message = "O tipo de usuário deve ser informado.")
     private UserType type;
 
     public static long getSerialVersionUID() {

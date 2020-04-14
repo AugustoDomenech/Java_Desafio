@@ -28,8 +28,11 @@ public class UserController {
 	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping( value = "/users", method = RequestMethod.GET  )
 	@ResponseBody
-	public List<User> getUserAll( ) {
-		return userRepository.findAll();
+	public List<User> getUserAll( @RequestHeader("Bearer") String token ) {
+		if (UserAuthenticationService.validateToken(token)) {
+			return userRepository.findAll();	
+		}
+		return null;
 	}			
 	
 	//Busca um usuário por um ID especifico
@@ -47,10 +50,25 @@ public class UserController {
 	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping( value = "/save", method = RequestMethod.POST)
 	@ResponseBody
-	public User saveUser( @RequestBody User user ) {		
-		user.setRegister_date(LocalDate.now());	
-		return userRepository.save(user);
-	}
+	public User saveUser( @RequestHeader("Bearer") String token , @RequestBody User user ) {		
+		if (UserAuthenticationService.validateToken(token)) {
+			Optional<User> userLogin = userRepository.findById( UserAuthenticationService.getIdBodyToken(token));
+			
+			User userLogged = null;
+			if (userLogin.isPresent()) {
+				userLogged = userLogin.get();
+			} else {
+				return null;				
+			}
+							
+			if((userLogin != null) && userLogged.getType().getId() == 3 ) {
+				user.setRegister_date(LocalDate.now());	
+				return userRepository.save(user);							
+			}
+		}
+		return null;
+	};
+	
 		
 	// Verifica se o usuário existe pelo seu login e senha
 	@CrossOrigin(origins = "http://localhost:3000")

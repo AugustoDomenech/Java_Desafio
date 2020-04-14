@@ -29,7 +29,7 @@ public class UserAuthenticationService {
 			
 			Claims clamis = TokenService.decodeToken(tokenTratado);
 			System.out.println("2");
-			
+			System.out.println( clamis.getSubject());
 			System.out.println(clamis.getIssuer());
 			System.out.println(clamis.getIssuedAt());
 			
@@ -42,9 +42,22 @@ public class UserAuthenticationService {
             System.out.println(e.getMessage());
 			return false;
 		}
-		
-		
-		
 	}
+	
+	// No corpo do Token só é armazenado o ID do usário
+	public static Long getIdBodyToken(String token) {
+		try {
+			String tokenTratado = token.replace("Bearer ", "");
+			System.out.println(tokenTratado);
+			
+			Claims clamis = TokenService.decodeToken(tokenTratado);
+			return Long.parseLong(clamis.getSubject());
+			
+		} catch (Exception e) {
+            System.out.println(e.getMessage());
+			return -1L;
+		}
+	}
+	
 	
 }
